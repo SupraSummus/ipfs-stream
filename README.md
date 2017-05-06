@@ -23,10 +23,10 @@ Examples
 
     python store.py | python restore.py
 
-Webcam streaming (to a file...):
+Webcam streaming, using `netcat`:
 
-    ffmpeg -f v4l2 -framerate 25 -video_size 640x480 -i /dev/video0 -f mpeg - | python store.py > chunks
+    ffmpeg -f v4l2 -framerate 25 -video_size 640x480 -i /dev/video0 -f mpeg - | python store.py | ncat -lkp 9000 --send-only
 
 And a client for this stream:
 
-    tail -f chunks | python restore.py | ffplay -f mpeg -
+    ncat localhost 9000 | python restore.py | ffplay -f mpeg -
